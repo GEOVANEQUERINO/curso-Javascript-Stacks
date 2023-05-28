@@ -11,26 +11,40 @@ function addItem(title)
 function refreshUI()
 {    
     let htmlData = '';
-    let i = 0;
 
-   // for(var i = 0; i < todoList.length; i++)
-   while (i < todoList.length)
+    let idx = 1;
+
+    for(let i in todoList) // instrução foreach
     {
+       let item = todoList[i];
+       let checked = item.done ? 'checked' : '';
        htmlData += `
           <div>
             <label>
-                <input type = "checkbox" name= "done" value = "${todoList[i].done}" />
-                <span style= "${todoList[i].done ? 'text-decoration: line-through' : ''}" >
-                ${todoList[i].title}
+                <input type = "checkbox" ${checked} onclick = "this.checked ? doneClickHandler(${i}) : undoneClickHandler(${i})" name= "done" value = "${item.done}" />
+                <span style= "${item.done ? 'text-decoration: line-through' : ''}" >
+                ${idx}. ${item.title}
                 </span>
             </label>
           </div>       
           `;            
 
-          i++;
+          idx++;
     }
 
     document.getElementById('todoList').innerHTML = htmlData;
+}
+
+function doneClickHandler(idx)
+{
+    todoList[idx].done = true;
+    refreshUI();
+}
+
+function undoneClickHandler(idx)
+{
+    todoList[idx].done = false;
+    refreshUI();
 }
 
 function addItemClickHandler()
